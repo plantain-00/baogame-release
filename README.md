@@ -11,7 +11,7 @@ a html5 mutiplayer game
 #### install
 
 ```bash
-git clone -b release https://github.com/plantain-00/baogame.git . --depth=1 && npm i --production
+git clone https://github.com/plantain-00/baogame-release.git . --depth=1 && npm i --production
 ```
 
 ```bash
