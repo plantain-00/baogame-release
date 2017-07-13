@@ -1,0 +1,65 @@
+{
+  "name": "baogame",
+  "description": "a html5 mutiplayer game",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plantain-00/baogame.git"
+  },
+  "author": "York Yao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plantain-00/baogame/issues"
+  },
+  "scripts": {
+    "start": "node dist/app.js",
+    "debug": "node dist/app.js --debug",
+    "build": "npm run clean && npm run cleanCss && npm run file2variable && npm run image2base64 && tsc -p src/back/ && tsc -p src/front/ && webpack --config static/webpack.config.js && rev-static --config static/rev-static.config.js",
+    "clean": "rimraf dist/ static/dist/ static/scripts/ static/index-*.css",
+    "lint": "tslint \"src/**/*.ts\" && npm run standard",
+    "cleanCss": "cleancss -o static/index.bundle.css static/index.css",
+    "standard": "standard \"**/*.config.js\"",
+    "fix": "standard --fix \"**/*.config.js\"",
+    "file2variable": "file2variable-cli static/protocol.proto src/front/template.html -o src/front/proto-variables.ts --protobuf --html-minify",
+    "test": "tsc -p spec && jasmine && tsc -p static_spec && karma start static_spec/karma.config.js",
+    "image2base64": "image2base64-cli static/imgs/**/*.png static/imgs/*.png --es6 src/front/variables.ts --base static/imgs",
+    "release": "clean-release"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "homepage": "https://github.com/plantain-00/baogame#readme",
+  "dependencies": {
+    "express": "4.15.3",
+    "minimist": "1.2.0",
+    "protobufjs": "6.8.0",
+    "reconnection": "1.0.0",
+    "uws": "8.14.0"
+  },
+  "devDependencies": {
+    "@types/express": "4.0.36",
+    "@types/jasmine": "2.5.53",
+    "@types/jquery": "3.2.5",
+    "@types/minimist": "1.2.0",
+    "@types/uws": "0.13.0",
+    "clean-css-cli": "4.1.6",
+    "clean-release": "1.1.0",
+    "file2variable-cli": "1.4.0",
+    "image2base64-cli": "2.0.1",
+    "jasmine": "2.6.0",
+    "karma": "1.7.0",
+    "karma-chrome-launcher": "2.2.0",
+    "karma-firefox-launcher": "1.0.1",
+    "karma-jasmine": "1.1.0",
+    "karma-webpack": "2.0.3",
+    "rev-static": "3.2.1",
+    "rimraf": "2.6.1",
+    "standard": "10.0.2",
+    "tslib": "1.7.1",
+    "tslint": "5.4.3",
+    "typescript": "2.4.1",
+    "vue": "2.3.4",
+    "vue-class-component": "5.0.2",
+    "webpack": "3.0.0"
+  }
+}
