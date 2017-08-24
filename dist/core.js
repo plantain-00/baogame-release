@@ -2,16 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const common = require("./common");
 const services = require("./services");
-exports.items = [];
+let items = [];
 exports.users = [];
 exports.grenades = [];
 exports.mines = [];
-exports.debug = false;
+let debug = false;
 function init(debugMode) {
-    exports.debug = debugMode;
+    debug = debugMode;
     setInterval(() => {
         for (const itemGate of exports.map.itemGates) {
-            if (exports.items.length < exports.users.length) {
+            if (items.length < exports.users.length) {
                 const type = Math.floor(Math.random() * common.itemCounts.length);
                 const item = {
                     type,
@@ -24,12 +24,12 @@ function init(debugMode) {
                     x: 0,
                     y: 0,
                 };
-                exports.items.push(item);
+                items.push(item);
                 item.x = (itemGate.x + .5) * common.tileWidth;
                 item.y = (itemGate.y + .5) * common.tileHeight;
             }
         }
-        for (const item of exports.items) {
+        for (const item of items) {
             item.slowdown++;
             if (item.x >= common.w - common.itemSize || item.x <= common.itemSize) {
                 item.vx *= -1;
@@ -88,7 +88,7 @@ function init(debugMode) {
             for (let j = i + 1; j < exports.users.length; j++) {
                 services.user.collide(exports.users[i], exports.users[j]);
             }
-            for (const item of exports.items) {
+            for (const item of items) {
                 if (exports.users[i].dead || item.dead) {
                     continue;
                 }
@@ -112,7 +112,7 @@ function init(debugMode) {
         for (const user of exports.users) {
             services.user.update(user);
         }
-        const itemdata = exports.items.map(item => ({
+        const itemdata = items.map(item => ({
             x: Math.round(item.x),
             y: Math.round(item.y),
             type: item.type,
@@ -142,7 +142,7 @@ function init(debugMode) {
                 });
             }
         }
-        exports.items = exports.items.filter(item => !item.dead);
+        items = items.filter(item => !item.dead);
         exports.mines = exports.mines.filter(mine => !mine.dead);
         exports.grenades = exports.grenades.filter(grenade => !grenade.dead);
         exports.users = exports.users.filter(user => !user.dead);
@@ -161,13 +161,17 @@ function init(debugMode) {
     };
 }
 exports.init = init;
+function printInConsole(message) {
+    // tslint:disable-next-line:no-console
+    console.log(message);
+}
+exports.printInConsole = printInConsole;
 function emit(ws, protocol) {
     try {
-        ws.send(services.format.encode(protocol, exports.debug), { binary: !exports.debug });
+        ws.send(services.format.encode(protocol, debug), { binary: !debug });
     }
     catch (e) {
-        // tslint:disable-next-line:no-console
-        console.log(e);
+        printInConsole(e);
     }
 }
 exports.emit = emit;

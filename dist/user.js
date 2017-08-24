@@ -146,11 +146,9 @@ function getStatus(user) {
 function update(user) {
     user.doubleJumping = false;
     user.flying = 0;
-    for (const key in user.ignore) {
-        if (user.ignore.hasOwnProperty(key)) {
-            user.ignore[key]--;
-        }
-    }
+    user.ignore.forEach((ignore, i) => {
+        user.ignore[i]--;
+    });
     if (user.itemType === 0 /* power */ || user.itemType === 4 /* hide */ || user.itemType === 5 /* bomb */) {
         user.itemCount--;
         if (user.itemCount <= 0) {

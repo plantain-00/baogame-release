@@ -1,16 +1,88 @@
 syntax = "proto3";
 
-package protocolPackage;
+enum ItemType {
+    power = 0;
+    gun = 1;
+    mine = 2;
+    drug = 3;
+    hide = 4;
+    bomb = 5;
+    doublejump = 6;
+    flypack = 7;
+    grenade = 8;
+}
 
-message Protocol {
-    required uint32 kind = 1;
-    optional Tick tick = 2;
-    optional InitSuccess initSuccess = 3;
-    optional Join join = 4;
-    optional JoinSuccess joinSuccess = 5;
-    optional Control control = 6;
-    optional Explode explode = 7;
-    optional UserDead userDead = 8;
+enum RequestProtocolKind {
+    join = 2;
+    control = 4;
+}
+
+enum ResponseProtocolKind {
+    tick = 0;
+    initSuccess = 1;
+    joinSuccess = 3;
+    explode = 5;
+    userDead = 6;
+}
+
+enum UserStatus {
+    dieing = 0;
+    climbing = 1;
+    rolling2 = 2;
+    standing = 3;
+    rolling = 4;
+    mining = 5;
+    crawling = 6;
+    falling = 7;
+}
+
+message Item {
+    uint32 x = 1;
+    uint32 y = 2;
+    ItemType type = 3;
+    bool dead = 4;
+}
+
+message Mine {
+    uint32 x = 1;
+    uint32 y = 2;
+    bool dead = 3;
+}
+
+message Grenade {
+    uint32 x = 1;
+    uint32 y = 2;
+    uint32 r = 3;
+}
+
+message User {
+    ItemType itemType = 1;
+    uint32 itemCount = 2;
+    Ladder nearLadder = 3;
+    int32 faceing = 4;
+    uint32 fireing = 5;
+    uint32 grenadeing = 6;
+    bool danger = 7;
+    UserStatus status = 8;
+    string name = 9;
+    uint32 id = 10;
+    uint32 x = 11;
+    uint32 y = 12;
+    uint32 vy = 13;
+    uint32 score = 14;
+    bool dead = 15;
+    bool doubleJumping = 16;
+    uint32 flying = 17;
+}
+
+message Door {
+    uint32 x = 1;
+    uint32 y = 2;
+}
+
+message ItemGate {
+    uint32 x = 1;
+    float y = 2;
 }
 
 message Tick {
@@ -20,102 +92,68 @@ message Tick {
     repeated Grenade grenades = 4;
 }
 
-message InitSuccess {
-    required MapData map = 1;
-}
-
-message Join {
-    required string userName = 1;
-}
-
-message JoinSuccess {
-    required uint32 userId = 1;
-}
-
-message Control {
-    required uint32 leftDown = 1;
-    required uint32 rightDown = 2;
-    required uint32 upDown = 3;
-    required uint32 downDown = 4;
-    required uint32 itemDown = 5;
-    required bool leftPress = 6;
-    required bool rightPress = 7;
-    required bool upPress = 8;
-    required bool downPress = 9;
-    required bool itemPress = 10;
-}
-
-message Explode {
-    required uint32 x = 1;
-    required uint32 y = 2;
-    required uint32 power = 3;
-}
-
-message UserDead {
-    required User user = 1;
-    optional User killer = 2;
-}
-
 message MapData {
-    required uint32 w = 1;
-    required uint32 h = 2;
+    uint32 w = 1;
+    uint32 h = 2;
     repeated uint32 floors = 3;
     repeated Ladder ladders = 4;
     repeated Door doors = 5;
     repeated ItemGate itemGates = 6;
 }
 
+message InitSuccess {
+    MapData map = 1;
+}
+
+message Join {
+    string userName = 1;
+}
+
+message JoinSuccess {
+    uint32 userId = 1;
+}
+
+message Control {
+    uint32 leftDown = 1;
+    uint32 rightDown = 2;
+    uint32 upDown = 3;
+    uint32 downDown = 4;
+    uint32 itemDown = 5;
+    bool leftPress = 6;
+    bool rightPress = 7;
+    bool upPress = 8;
+    bool downPress = 9;
+    bool itemPress = 10;
+}
+
+message Explode {
+    uint32 x = 1;
+    uint32 y = 2;
+    uint32 power = 3;
+}
+
+message UserDead {
+    User user = 1;
+    User killer = 2;
+}
+
+message RequestProtocol {
+    RequestProtocolKind kind = 1;
+    Join join = 2;
+    Control control = 3;
+}
+
+message ResponseProtocol {
+    ResponseProtocolKind kind = 1;
+    InitSuccess initSuccess = 2;
+    JoinSuccess joinSuccess = 3;
+    Tick tick = 4;
+    Explode explode = 5;
+    UserDead userDead = 6;
+}
+
 message Ladder {
-    required float x = 1;
-    required uint32 y1 = 2;
-    required uint32 y2 = 3;
-}
-
-message Door {
-    required uint32 x = 1;
-    required uint32 y = 2;
-}
-
-message ItemGate {
-    required uint32 x = 1;
-    required float y = 2;
-}
-
-message User {
-    optional uint32 itemType = 1;
-    required uint32 itemCount = 2;
-    optional Ladder nearLadder = 3;
-    required int32 faceing = 4;
-    optional uint32 fireing = 5;
-    required uint32 grenadeing = 6;
-    required bool danger = 7;
-    required uint32 status = 8;
-    required string name = 9;
-    required uint32 id = 10;
-    required uint32 x = 11;
-    required uint32 y = 12;
-    required uint32 vy = 13;
-    required uint32 score = 14;
-    required bool dead = 15;
-    required bool doubleJumping = 16;
-    required uint32 flying = 17;
-}
-
-message Item {
-    required uint32 x = 1;
-    required uint32 y = 2;
-    required uint32 type = 3;
-    required bool dead = 4;
-}
-
-message Mine {
-    required uint32 x = 1;
-    required uint32 y = 2;
-    required bool dead = 3;
-}
-
-message Grenade {
-    required uint32 x = 1;
-    required uint32 y = 2;
-    required uint32 r = 3;
+    float x = 1;
+    uint32 y1 = 2;
+    uint32 y2 = 3;
 }

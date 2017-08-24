@@ -1,6 +1,7 @@
 [![Dependency Status](https://david-dm.org/plantain-00/baogame.svg)](https://david-dm.org/plantain-00/baogame)
 [![devDependency Status](https://david-dm.org/plantain-00/baogame/dev-status.svg)](https://david-dm.org/plantain-00/baogame#info=devDependencies)
-[![Build Status](https://travis-ci.org/plantain-00/baogame.svg?branch=master)](https://travis-ci.org/plantain-00/baogame)
+[![Build Status: Linux](https://travis-ci.org/plantain-00/baogame.svg?branch=master)](https://travis-ci.org/plantain-00/baogame)
+[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/plantain-00/baogame?branch=master&svg=true)](https://ci.appveyor.com/project/plantain-00/baogame/branch/master)
 
 # baogame
 

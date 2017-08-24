@@ -1,24 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const libs = require("./libs");
-let protocolType;
+const core = require("./core");
+let requestProtocolType;
+let responseProtocolType;
 function start() {
     libs.protobuf.load("./static/protocol.proto").then(root => {
-        protocolType = root.lookup("protocolPackage.Protocol");
+        requestProtocolType = root.lookup("RequestProtocol");
+        responseProtocolType = root.lookup("ResponseProtocol");
     }, error => {
-        // tslint:disable-next-line:no-console
-        console.log(error);
+        core.printInConsole(error);
     });
 }
 exports.start = start;
 function encode(protocol, debug) {
-    return debug ? JSON.stringify(protocol) : protocolType.encode(protocol).finish();
+    return debug ? JSON.stringify(protocol) : responseProtocolType.encode(protocol).finish();
 }
 exports.encode = encode;
 function decode(protocol) {
     if (typeof protocol === "string") {
         return JSON.parse(protocol);
     }
-    return protocolType.decode(new Buffer(protocol)).toJSON();
+    return requestProtocolType.toObject(requestProtocolType.decode(new Buffer(protocol)));
 }
 exports.decode = decode;
