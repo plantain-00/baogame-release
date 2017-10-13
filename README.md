@@ -28,3 +28,9 @@ key | default value | description
 -p | 8030 | port
 -h | localhost | host
 --debug | false | when true, send json rather than protobuf
+
+#### docker
+
+```bash
+docker run -d -p 8030:8030 plantain/baogame
+```
